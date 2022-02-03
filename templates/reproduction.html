@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Security game</title>
+<link rel="shortcut icon" href="{{ url_for('static', filename='mountain.ico') }}">
+{{name}}
+<style>
+#board {
+background: url('static/cellrd.jpeg');
+background-size: cover;
+border: 1px solid black;
+background-color: gray;
+height: 350px;
+width: 650px;
+}
+.character {
+background: url('static/infection.jpeg');
+background-size: cover;
+background-color: lightblue;
+width: 120px;
+height: 120px;
+padding: 10px;
+margin: 10px;
+float: left;
+}
+.thief {
+background-color: red;
+background-size: cover;
+background: url('static/bloodcell.jpeg');
+}
+.hidden {
+display: none;
+}
+.visible {
+ display: block;
+}
+</style>
+</head>
+<body>
+<input type="button" value="Play" onclick="startGame()";/>
+<div id="board">
+<div class="character">1</div>
+<div class="character">2</div>
+<div class="character">3</div>
+<div class="character">4</div>
+<div class="character">5</div>
+<div class="character">6</div>
+</div>
+<script>
+function startGame() {
+gameLoop();
+}
+var loops = 0;
+var peopleVisible = false;
+var gameScore = 0;
+function gameLoop() {
+peopleVisible = !peopleVisible;
+createCharacters();
+loops++;
+if(loops < 12) {
+setTimeout(gameLoop, 1000);
+}
+else if (gameScore == 6) {
+alert("You have dominated the world. Your score is 6/6");
+}
+else {
+alert("You scored " + gameScore + " You did not succeed.");
+}
+}
+function createCharacters() {
+var board = document.getElementById("board");
+var classToSet = peopleVisible ? "character Visible" : "character hidden";
+for(var index = 0; index < 6; index++) {
+board.children[index].className = classToSet;
+board.children[index].innerHTML = "";
+board.children[index].onclick = function() {
+gameScore += -2;
+}
+}
+var randomNumber = Math.floor(Math.random() * 6) + 1;
+board.children[randomNumber-1].innerHTML = ""
+board.children[randomNumber-1].onclick = function() {
+gameScore++;
+}
+board.children[randomNumber-1].className = classToSet + " thief";
+}
+</script>
+</body>
+</html>
